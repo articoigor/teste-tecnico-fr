@@ -1,66 +1,23 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
 
-export class QuoteRequestDto {
-    recipient: RecipientDto;
-
-    @ValidateNested({each: true})
-    @Type(() => PackageDto)
-    volumes: PackageDto[];
-
-    constructor(recipient: RecipientDto, volumes: PackageDto[]){
-        this.recipient = recipient;
-        this.volumes = volumes;
-    }
-}
-
-export class QuoteResponseDto {
-    carrier: QuoteModel[];
-
-    constructor(carrier: QuoteModel[]){
-        this.carrier = carrier;
-    }
-}
-
-export class QuoteModel {
-    final_price: number;
-    name: string;
-    service: string;
-
-    constructor(final_price: number, name: string, service: string){
-        this.final_price = final_price;
-        this.name = name;
-        this.service = service;
-    }
-}
-
-export class CarrierDto {
-    name: string;
-    service: string;
-    deadline: string;
-    price: number;
-
-    constructor(name: string, service: string, deadline: string, price: number){
-        this.name = name;
-        this.service = service;
-        this.deadline = deadline;
-        this.price = price;
-    }
-}
-
-export class RecipientDto {
-    address: AddressDto;
-
-    constructor(address: AddressDto){
-        this.address = address;
-    }
-}
-
 export class AddressDto {
+    @IsString()
+    @IsNotEmpty()
     zipcode: string;
 
     constructor(zipcode: string){
         this.zipcode = zipcode;
+    }
+}
+
+export class RecipientDto {
+    @ValidateNested()
+    @Type(() => AddressDto)
+    address: AddressDto;
+
+    constructor(address: AddressDto){
+        this.address = address;
     }
 }
 
@@ -114,5 +71,54 @@ export class PackageDto{
             this.height = height;
             this.width = width;
             this.length = length;
+    }
+}
+
+export class QuoteRequestDto {
+    @ValidateNested() 
+    @Type(() => RecipientDto)
+    recipient: RecipientDto;
+
+    @ValidateNested({each: true})
+    @Type(() => PackageDto)
+    volumes: PackageDto[];
+
+    constructor(recipient: RecipientDto, volumes: PackageDto[]){
+        this.recipient = recipient;
+        this.volumes = volumes;
+    }
+}
+
+export class QuoteResponseDto {
+    carrier: QuoteModel[];
+
+    constructor(carrier: QuoteModel[]){
+        this.carrier = carrier;
+    }
+}
+
+export class QuoteModel {
+    final_price: number;
+    name: string;
+    service: string;
+
+    constructor(final_price: number, name: string, service: string){
+        this.final_price = final_price;
+        this.name = name;
+        this.service = service;
+    }
+}
+
+export class CarrierDto {
+    name: string;
+    service: string;
+    deadline: string;
+    price: number;
+
+    constructor(name: string, service: string, deadline: string, price: number){
+        this.name = name;
+        this.service = service;
+        this.deadline = deadline;
+        this.price = price;
     }
 }
