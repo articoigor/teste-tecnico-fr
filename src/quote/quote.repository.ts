@@ -1,0 +1,39 @@
+import { HttpService } from "@nestjs/axios";
+import { Injectable } from "@nestjs/common";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
+import { AxiosResponse } from "axios";
+import { SupabaseService } from "src/database/supabase.service";
+import { FreteRapidoRequestDto } from "src/utils/dtos/freteRapido.dto";
+import { QuoteModel } from "src/utils/dtos/quote.dto";
+
+
+@Injectable()
+export class QuoteRepository {
+    constructor(private readonly httpService: HttpService,
+                private readonly supabaseService: SupabaseService
+    ) {}
+
+    async processQuote(quoteDto: FreteRapidoRequestDto): Promise<AxiosResponse> {
+        try {
+          return this.httpService.axiosRef.post('https://sp.freterapido.com/api/v3/quote/simulate', quoteDto);
+        } catch (error) {
+          console.error('Error calling quoting API', error);
+          throw error;
+        }
+    }
+
+    async recordData(quotes: QuoteModel[]): Promise<any> {
+      try{
+        let client = this.supabaseService.getClient();
+        console.log(quotes);
+        const data = await client
+        .from('quotes') 
+        .insert(quotes);   
+
+        return data;
+      } catch(e){
+        console.log(e);
+        throw new Error(e);
+      }
+    }
+}

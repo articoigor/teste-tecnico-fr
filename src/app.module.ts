@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { QuoteService } from './services/quote.service';
-import { QuoteController } from './controllers/quote.controller';
+import { QuoteModule } from './quote/quote.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
-  controllers: [QuoteController],
-  providers: [QuoteService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    QuoteModule
+  ],
 })
+
 export class AppModule {}
