@@ -25,12 +25,27 @@ export class QuoteRepository {
     async recordData(quotes: QuoteModel[]): Promise<any> {
       try{
         let client = this.supabaseService.getClient();
-        console.log(quotes);
+
         const data = await client
         .from('quotes') 
         .insert(quotes);   
 
         return data;
+      } catch(e){
+        console.log(e);
+        throw new Error(e);
+      }
+    }
+
+    async getRecords(last_quotes: number): Promise<any> {
+      try{
+        let client = this.supabaseService.getClient();
+
+        return client
+        .from('quotes') 
+        .select('*')                
+        .order('created_at', { ascending: false })
+        .limit(last_quotes ? last_quotes : Infinity);
       } catch(e){
         console.log(e);
         throw new Error(e);
