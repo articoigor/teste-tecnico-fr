@@ -2,7 +2,7 @@ import { DispatcherDto, FreteRapidoRequestDto, RecipientDto, ShipperDto, VolumeD
 import { QuoteModel, QuoteRequestDto } from "../dtos/quote.dto";
 
 export function formatQuoteRequest(req: QuoteRequestDto){
-    const shipper = new ShipperDto("25438296000158", "1d52a9b6b78cf07b08586152459a5c90", "5AKVkHqCn");
+    const shipper = new ShipperDto(process.env.DISPATCHER_CNPJ, process.env.FRETE_RAPIDO_API_KEY, process.env.PLATFORM_CODE);
 
     const recipient = new RecipientDto(0, "", "", "BRA", Number(req.recipient.address.zipcode));
 
@@ -23,7 +23,7 @@ export function transformResToModel(offers: any[]): QuoteModel[] {
 }
 
 function formatDispatcher(req: QuoteRequestDto): DispatcherDto{
-    const dispatcher = new DispatcherDto("25438296000158", 29161376, []);
+    const dispatcher = new DispatcherDto(process.env.DISPATCHER_CNPJ, Number(process.env.DISPATCHER_ZIPCODE), []);
 
     for(const vol of req.volumes){
         dispatcher.volumes.push(new VolumeDto(

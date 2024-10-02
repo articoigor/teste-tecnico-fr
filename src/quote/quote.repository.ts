@@ -15,7 +15,7 @@ export class QuoteRepository {
 
     async processQuote(quoteDto: FreteRapidoRequestDto): Promise<AxiosResponse> {
         try {
-          return this.httpService.axiosRef.post('https://sp.freterapido.com/api/v3/quote/simulate', quoteDto);
+          return this.httpService.axiosRef.post(process.env.FRETE_RAPIDO_API_URI, quoteDto);
         } catch (error) {
           console.error('Error calling quoting API', error);
           throw error;

@@ -19,7 +19,7 @@ export class CustomValidationPipe extends ValidationPipe {
 
     errors.forEach((error) => {
       if (error.children && error.children.length > 0) {
-        messages.push(...this.formatValidationErrors(error.children)); // Recursively handle nested errors
+        messages.push(...this.formatValidationErrors(error.children)); 
       } else {
         const errorType = this.getExpectedType(error);
 
