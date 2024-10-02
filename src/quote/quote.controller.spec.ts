@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuoteController } from './quote.controller';
 import { QuoteService } from './quote.service';
-import { QuoteRequestDto } from 'src/utils/dtos/quote.dto'; // Ensure this path is correct
-import { BadRequestException } from '@nestjs/common';
+import { QuoteRequestDto } from 'src/utils/dtos/quote.dto';
+
 
 describe('QuoteController', () => {
   let quoteController: QuoteController;

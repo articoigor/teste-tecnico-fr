@@ -1,6 +1,5 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { AxiosResponse } from "axios";
 import { SupabaseService } from "src/database/supabase.service";
 import { FreteRapidoRequestDto } from "src/utils/dtos/freteRapido.dto";
