@@ -4,9 +4,28 @@ Teste técnico para vaga na empresa **Frete Rápido**. A aplicação simula fret
 
 ## ✨ Funcionalidades
 
-- **POST /frete**: Simula um fretamento, fornecendo informações sobre o frete de acordo com os dados da remessa fornecidos. Os resultados são armazenados em uma instância gratuita do Supabase
+- **POST /quote**: Simula valores de frete por diversas empresas através da API da FreteRápido, utilizando como parâmetros dados referentes a remessa de volumes como dimensões gerais e preço unitário. Os resultados desses fretamentos ( nome da empresa, valor final, etc ) são armazenados em uma instância gratuita do Supabase para serem posteriormente processados através da rota GET. Por fim, para realizar a chamada com sucesso, o body do request deve seguir o seguinte schema:
 
-- **GET /metrics?last_quotes**: Exibe métricas de fretamentos realizados, processando os dados já armazenados no banco de dados. O parâmetro last_quotes limita a quantidade de registros recuperados antes de realizar o processamento e geração das métricas.
+  ```bash
+  {
+    "recipient":{
+        "address":{
+          "zipcode":""
+        }
+    },
+    "volumes":[
+        {
+          "amount":0,
+          "unitary_weight":0,
+          "price":0,
+          "sku":"",
+          "height":0,
+          "width":0,
+          "length":0
+        }
+    ]
+  }
+- **GET /metrics?last_quotes**: Exibe métricas de fretamentos realizados, processando os dados já armazenados no banco de dados. O parâmetro ***last_quotes*** limita a quantidade de registros recuperados antes de realizar o processamento e geração das métricas.
 
 ## 📋 Pré-requisitos
 
@@ -23,18 +42,18 @@ Siga os passos abaixo para rodar a aplicação com Docker:
 
    ```bash
    git clone https://github.com/articoigor/teste-tecnico-fr.git
-
 2. Passe para o diretório do projeto:
 
     ```bash
     cd teste-tecnico-fr
+3. Adicione o arquivo ***.env*** neste diretório.
 
-3. Adicione o arquivo .env neste diretório.
 
 4. Execute o comando de Docker Compose:
-  docker-compose up
-
+  
+    ```bash
+    docker-compose up
 5. Pronto, a aplicação já estará rodando !
 
-## OBSERVAÇÕES: 
+## OBSERVAÇÃO: 
 - Caso queira rodar sem Docker, basta seguir até o passo 3 acima e então executar **npm i** seguido de **npm run start** manualmente
