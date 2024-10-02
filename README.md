@@ -25,6 +25,7 @@ Siga os passos abaixo para rodar a aplicação com Docker:
    git clone https://github.com/seu-usuario/teste-tecnico-fr.git
 
 2. Passe para o diretório do projeto:
+  ```bash
   cd teste-tecnico-fr
 
 3. Adicione o arquivo .env neste diretório.
@@ -34,4 +35,4 @@ Siga os passos abaixo para rodar a aplicação com Docker:
 
 5. Pronto, a aplicação já estará rodando !
 
-OBS: Caso queira rodar sem Docker, basta seguir até o passo 3 acima e então executar npm i seguido de npm run start manualmente.
+## OBS: Caso queira rodar sem Docker, basta seguir até o passo 3 acima e então executar npm i seguido de npm run start manualmente
