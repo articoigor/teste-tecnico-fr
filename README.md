@@ -25,6 +25,7 @@ Siga os passos abaixo para rodar a aplicação com Docker:
    git clone https://github.com/articoigor/teste-tecnico-fr.git
 
 2. Passe para o diretório do projeto:
+
     ```bash
     cd teste-tecnico-fr
 
