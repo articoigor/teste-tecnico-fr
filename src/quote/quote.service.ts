@@ -73,6 +73,7 @@ export class QuoteService {
       const priceSumm = carrier.prices.reduce((acc: number, curr: number) => acc + curr, 0);
 
       return {
+        carrierName: carrier.carrierName,
         quotesQtt: qtt,
         totalPrice: priceSumm,
         medianPrice: priceSumm / qtt
