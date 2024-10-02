@@ -36,4 +36,5 @@ Siga os passos abaixo para rodar a aplicação com Docker:
 
 5. Pronto, a aplicação já estará rodando !
 
-## OBS: Caso queira rodar sem Docker, basta seguir até o passo 3 acima e então executar npm i seguido de npm run start manualmente
+## OBSERVAÇÕES: 
+- Caso queira rodar sem Docker, basta seguir até o passo 3 acima e então executar npm i seguido de npm run start manualmente
