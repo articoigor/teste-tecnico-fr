@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuoteController } from './quote.controller';
 import { QuoteService } from './quote.service';
-import { QuoteRequestDto } from 'src/utils/dtos/quote.dto';
+import { QuoteRequestDto } from 'src/utils/dtos/quote.dto'; // Ensure this path is correct
+import { BadRequestException } from '@nestjs/common';
 
 describe('QuoteController', () => {
   let quoteController: QuoteController;
@@ -14,7 +15,7 @@ describe('QuoteController', () => {
         {
           provide: QuoteService,
           useValue: {
-            processQuotes: jest.fn(),
+            processQuote: jest.fn(), 
             processMetrics: jest.fn(),
           },
         },
@@ -25,63 +26,96 @@ describe('QuoteController', () => {
     quoteService = module.get<QuoteService>(QuoteService);
   });
 
-  it('Should process quotes', async () => {
-    const mockProcessedResult = { 
-      carrier: [ 
-        { name: "Correios", final_price: 20.50, service: "SEDEX" } 
-      ]
+  it('should process quotes', async () => {
+    const mockProcessedResult = {
+      carrier: [
+        { name: 'Correios', final_price: 20.50, service: 'SEDEX' },
+      ],
     };
 
-    const serviceMock = quoteService.processQuote as jest.Mock;
-    console.log(serviceMock);
-    serviceMock.mockReturnValue(mockProcessedResult);
+    (quoteService.processQuote as jest.Mock).mockReturnValue(mockProcessedResult);
 
     const mockQuotes: QuoteRequestDto = {
-        recipient:{
-          "address":{
-              "zipcode":"00000000"
-          }
+      recipient: {
+        address: {
+          zipcode: '00000000',
         },
-        volumes:[
-            {
-                "amount":1,
-                "category": 2,
-                "unitary_weight":3,
-                "price":1000,
-                "sku":"teste-unidade",
-                "height":0.2,
-                "width":0.2,
-                "length":0.2
-            }
-        ]
+      },
+      volumes: [
+        {
+          amount: 1,
+          category: 2,
+          unitary_weight: 3,
+          price: 1000,
+          sku: 'teste-unidade',
+          height: 0.2,
+          width: 0.2,
+          length: 0.2,
+        },
+      ],
     };
 
-    const result = quoteController.processQuote(mockQuotes);
+    const result = await quoteController.processQuote(mockQuotes);
 
     expect(result).toEqual(mockProcessedResult);
-
     expect(quoteService.processQuote).toHaveBeenCalledWith(mockQuotes);
   });
 
-  it('should process metrics via the controller', async () => {
+  it('should not process quotes', async () => {
+    const invalidRequestBody = {
+      recipient: {
+        address: {
+          zipcode: '00000000',
+        },
+      },
+      volumes: [
+        {
+          amount: 1,
+          category: undefined, 
+          unitary_weight: 'três', 
+          price: '1000', 
+          sku: 'teste-unidade',
+          height: 0.2,
+          width: 0.2,
+          length: 0.2,
+        },
+      ],
+    };
+
+    try {
+      await quoteController.processQuote(invalidRequestBody as any);
+    } catch (error) {
+      expect(error.response).toEqual({
+        message: [
+          'O campo category é de preenchimento obrigatório.',
+          'O campo price deveria ser do tipo number',
+          'O campo unitary_weight deveria ser do tipo number',
+        ],
+        error: 'Bad Request',
+        statusCode: 400,
+      });
+    }
+  });
+
+  it('should process metrics (no last quote informed)', async () => {
     const mockProcessedMetricResult = {
-        "lowestQuote": 10,
-        "highestQuote": 40,
-        "carriersData": [
-            {
-                "carrierName": "Correios",
-                "quotesQtt": 2,
-                "totalPrice": 50,
-                "medianPrice": 25
-            }
-        ]
+      lowestQuote: 10,
+      highestQuote: 40,
+      carriersData: [
+        {
+          carrierName: 'Correios',
+          quotesQtt: 2,
+          totalPrice: 50,
+          medianPrice: 25,
+        },
+      ],
     };
 
     (quoteService.processMetrics as jest.Mock).mockReturnValue(mockProcessedMetricResult);
 
-    const result = quoteController.processMetrics(null);
+    const result = await quoteController.processMetrics({});
 
     expect(result).toEqual(mockProcessedMetricResult);
-    expect(quoteService.processMetrics).toHaveBeenCalledWith(null);
+    expect(quoteService.processMetrics).toHaveBeenCalledWith(undefined);
   });
 });

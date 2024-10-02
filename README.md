@@ -6,7 +6,7 @@ Teste técnico para vaga na empresa **Frete Rápido**. A aplicação simula fret
 
 - **POST /frete**: Simula um fretamento, fornecendo informações sobre o frete de acordo com os dados da remessa fornecidos. Os resultados são armazenados em uma instância gratuita do Supabase
 
-- **GET /metrics**: Exibe métricas de fretamentos realizados, processando os dados já armazenados no banco de dados.
+- **GET /metrics?last_quotes**: Exibe métricas de fretamentos realizados, processando os dados já armazenados no banco de dados. O parâmetro last_quotes limita a quantidade de registros recuperados antes de realizar o processamento e geração das métricas.
 
 ## 📋 Pré-requisitos
 
@@ -22,11 +22,11 @@ Siga os passos abaixo para rodar a aplicação com Docker:
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/teste-tecnico-fr.git
+   git clone https://github.com/articoigor/teste-tecnico-fr.git
 
 2. Passe para o diretório do projeto:
-  ```bash
-  cd teste-tecnico-fr
+    ```bash
+    cd teste-tecnico-fr
 
 3. Adicione o arquivo .env neste diretório.
 
